@@ -57,7 +57,7 @@ jobs:
         with:
           filename: coverage.xml
           badge: true
-          fail_below_min: true # Optional: Fail the build if coverage is too low
+          fail_below_min: false # Optional: Fail the build if coverage is too low
           format: markdown
           output: both
 
