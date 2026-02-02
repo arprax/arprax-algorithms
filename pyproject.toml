@@ -10,9 +10,12 @@ readme = "README.md"
 authors = [{ name="Arprax Lab", email="lab@arprax.com" }]
 requires-python = ">=3.9"
 
-# --- ADD THE SECTION BELOW ---
+[tool.setuptools]
+package-dir = {"" = "src"}
+
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["arprax_algorithms*"]
 
 [project.optional-dependencies]
 dev = ["build", "twine", "pytest"]
