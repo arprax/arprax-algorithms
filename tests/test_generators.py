@@ -1,4 +1,4 @@
-from arprax_algorithms.generators import random_array, sorted_array
+from arprax_algorithms.utils.generators import random_array, sorted_array
 
 def test_random_array_length():
     data = random_array(100)
