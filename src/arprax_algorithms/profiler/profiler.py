@@ -4,7 +4,7 @@ import copy
 import sys
 import statistics
 import functools
-from typing import Callable, List, Dict, Any, Union, Optional
+from typing import Callable, List, Dict, Any
 
 class ArpraxProfiler:
     def __init__(self, repeats: int = 5, warmup: int = 1, mode: str = "min"):
@@ -193,10 +193,14 @@ class ArpraxProfiler:
 
     def _guess_complexity(self, ratio: float) -> str:
         """Internal heuristic to determine Big O based on doubling ratios."""
-        if ratio < 1.4: return "O(1) / O(log N)"
-        if 1.6 <= ratio <= 2.5: return "O(N)"
-        if 3.5 <= ratio <= 4.8: return "O(N^2)"
-        if 7.0 <= ratio <= 9.0: return "O(N^3)"
+        if ratio < 1.4:
+            return "O(1) / O(log N)"
+        if 1.6 <= ratio <= 2.5:
+            return "O(N)"
+        if 3.5 <= ratio <= 4.8:
+            return "O(N^2)"
+        if 7.0 <= ratio <= 9.0:
+            return "O(N^3)"
         return "High Growth"
 
     def print_analysis(self, func_name: str, results: List[Dict[str, Any]]):
@@ -225,7 +229,8 @@ if __name__ == "__main__":
     # 1. Multi-Argument Test
     def two_sum(arr, target):
         for x in arr:
-            if x == target: return True
+            if x == target:
+                return True
         return False
 
     def two_sum_gen(n):
