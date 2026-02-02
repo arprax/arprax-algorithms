@@ -4,11 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arprax-algorithms"
-version = "0.1.0"
+version = "0.1.1"  # <--- Update this before your next release
 description = "Industrial-Grade Algorithms by Arprax Lab"
 readme = "README.md"
 authors = [{ name="Arprax Lab", email="lab@arprax.com" }]
 requires-python = ">=3.9"
+# Add keywords to help with Google/PyPI search visibility
+keywords = ["algorithms", "sorting", "profiler", "industrial-cs", "arprax"]
+# Add classifiers to show professionalism
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -17,5 +27,18 @@ package-dir = {"" = "src"}
 where = ["src"]
 include = ["arprax_algorithms*"]
 
+[tool.semantic_release]
+version_variable = ["pyproject.toml:project.version"]
+branch = "main" # Monitoring the PUBLIC main branch for releases
+upload_to_pypi = false  # pipeline handles this
+build_command = false # GitHub Action handles the build
+
 [project.optional-dependencies]
-dev = ["build", "twine", "pytest"]
+dev = ["build", "twine", "pytest", "ruff"] # <--- Added ruff here
+
+[project.urls]
+"Homepage" = "https://algorithms.arprax.com/"
+"Documentation" = "https://algorithms.arprax.com/reference/api/"
+"Source" = "https://github.com/arprax/arprax-algorithms"
+"Tracker" = "https://github.com/arprax/arprax-algorithms/issues"
+"Arprax" = "https://www.arprax.com/"

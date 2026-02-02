@@ -1,0 +1,28 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+# This section maps your commit messages to categories automatically
+autolabeler:
+  - label: 'feature'
+    branch: ['/feat/.*/']
+    title: ['/feat:.*/']
+  - label: 'fix'
+    title: ['/fix:.*/']
+  - label: 'documentation'
+    title: ['/docs:.*/']
+
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+
+template: |
+  ## Arprax Algorithms $RESOLVED_VERSION
+  
+  $CHANGES
