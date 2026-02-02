@@ -31,7 +31,7 @@ include = ["arprax_algorithms*"]
 version_variable = ["pyproject.toml:project.version"]
 branch = "main" # Monitoring the PUBLIC main branch for releases
 upload_to_pypi = false  # pipeline handles this
-build_command = false # GitHub Action handles the build
+build_command = "python -m build" # false: GitHub Action handles the build
 
 [project.optional-dependencies]
 dev = ["build", "twine", "pytest", "ruff"] # <--- Added ruff here
