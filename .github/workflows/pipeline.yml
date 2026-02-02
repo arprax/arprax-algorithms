@@ -71,6 +71,8 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: write
+    outputs:
+      released: ${{ steps.release.outputs.released }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -86,7 +88,8 @@ jobs:
   deploy:
     name: Build and Publish to PyPI
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    needs: release
+    if: needs.release.outputs.released == 'true' || startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
