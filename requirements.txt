@@ -2,3 +2,4 @@ mkdocs-material>=9.5.0
 mkdocstrings[python]>=0.24.0
 markdown-callouts
 pymdown-extensions
+mkdocs-static-i18n>=1.2.0
