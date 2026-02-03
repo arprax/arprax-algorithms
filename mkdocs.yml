@@ -19,9 +19,23 @@ theme:
     - content.tabs.link
     - navigation.footer
   palette:
-    scheme: default
-    primary: teal
-    accent: purple
+    # 1. Light Mode (and OS default if light)
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    # 2. Dark Mode (and OS default if dark)
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
 
 copyright: '&copy; 2026 <a href="https://arprax.com">Arprax Lab</a> | A core division of Arprax dedicated to Applied Data Intelligence.'
 
@@ -41,6 +55,18 @@ plugins:
             show_root_toc_entry: false
             show_source: true
             heading_level: 4
+  - i18n:
+      default_language: en
+      languages:
+        - locale: en
+          name: English
+          default_name: English
+          build: true
+          default: true  # <--- This is the missing piece
+        - locale: bn
+          name: বাংলা
+          default_name: Bengali
+          build: true
 
 nav:
   - Home: index.md
@@ -126,3 +152,10 @@ extra:
     - icon: fontawesome/solid/envelope
       link: mailto:academy@arprax.com
       name: Email Arprax Academy
+  alternate:
+    - name: English
+      link: /
+      lang: en
+    - name: Bengali
+      link: /bn/
+      lang: bn
