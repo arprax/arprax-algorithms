@@ -81,6 +81,8 @@ nav:
       - 'Module 7: Git (Version Control)': bootcamp/07-version-control.md
   - '🔴 Part 2: Algorithms':
       - 'Overview & Roadmap': algorithms/index.md
+  - 🎡 Playgrounds:
+      - Linked List vs Array: playgrounds/linked_list_visualizer.md
   - '📔 The Handbook':
       - 'Preface': book/index.md
       - 'Introduction': book/intro.md
@@ -106,7 +108,7 @@ nav:
           - '14. Final Word': book/ch14-conclusion.md
   - '⚙️ Reference':
       - 'Arprax Library': reference/api.md
-  - '👨‍💻 About the Author': about.md
+  - '👨‍💻 About the Author': https://www.tanmoychowdhury.com/
 
 extra_css:
   - stylesheets/extra.css
