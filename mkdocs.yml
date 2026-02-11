@@ -83,7 +83,7 @@ nav:
       - 'Overview & Roadmap': algorithms/index.md
   - 🎡 Playgrounds:
       - Overview: playgrounds/index.md
-      - Linked List vs Array: playgrounds/linked_list_visualizer.md
+      - Linked List vs Array: playgrounds/linkedlist-visualizer.md
   - '📔 The Handbook':
       - 'Preface': book/index.md
       - 'Introduction': book/intro.md
