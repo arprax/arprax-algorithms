@@ -82,6 +82,7 @@ nav:
   - '🔴 Part 2: Algorithms':
       - 'Overview & Roadmap': algorithms/index.md
   - 🎡 Playgrounds:
+      - Overview: playgrounds/index.md
       - Linked List vs Array: playgrounds/linked_list_visualizer.md
   - '📔 The Handbook':
       - 'Preface': book/index.md
@@ -108,7 +109,7 @@ nav:
           - '14. Final Word': book/ch14-conclusion.md
   - '⚙️ Reference':
       - 'Arprax Library': reference/api.md
-  - '👨‍💻 About the Author': https://www.tanmoychowdhury.com/
+  - '👨‍💻 About the Author': 'https://www.tanmoychowdhury.com/ {: target="_blank" }'
 
 extra_css:
   - stylesheets/extra.css
