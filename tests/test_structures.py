@@ -1,5 +1,4 @@
-import pytest
-from arprax_algorithms.structures import SinglyLinkedList, DoublyLinkedList, Node
+from arprax_algorithms.structures import SinglyLinkedList, DoublyLinkedList
 from arprax_algorithms.algorithms.pointers import has_cycle, find_cycle_start
 
 
