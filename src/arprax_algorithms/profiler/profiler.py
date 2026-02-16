@@ -4,7 +4,9 @@ import copy
 import sys
 import statistics
 import functools
-from typing import Callable, List, Dict, Any
+from contextlib import contextmanager
+from typing import Callable, List, Dict, Any, Generator
+
 
 class ArpraxProfiler:
     def __init__(self, repeats: int = 5, warmup: int = 1, mode: str = "min"):
@@ -20,6 +22,28 @@ class ArpraxProfiler:
         self.warmup = warmup
         self.mode = mode
         self._profile_stats = {}
+
+    @contextmanager
+    def stopwatch(self, label: str = "Block") -> Generator[None, None, None]:
+        """
+        Context manager for precision timing of a specific code block.
+
+        Example:
+            with profiler.stopwatch("Database Query"):
+                # run expensive code here
+        """
+        start = timeit.default_timer()
+        try:
+            yield
+        finally:
+            end = timeit.default_timer()
+            elapsed = end - start
+
+            if label not in self._profile_stats:
+                self._profile_stats[label] = []
+            self._profile_stats[label].append(elapsed)
+
+            print(f"⏱️ [{label}] execution time: {elapsed:.6f}s")
 
     def benchmark(self, func: Callable, *args) -> float:
         """
@@ -63,11 +87,11 @@ class ArpraxProfiler:
         return min(times)
 
     def run_doubling_test(
-        self,
-        func: Callable,
-        input_gen: Callable[[int], Any],
-        start_n: int = 250,
-        rounds: int = 6
+            self,
+            func: Callable,
+            input_gen: Callable[[int], Any],
+            start_n: int = 250,
+            rounds: int = 6
     ) -> List[Dict[str, Any]]:
         """
         Performs OHPV2 Analysis by doubling input sizes and measuring time ratios.
@@ -107,10 +131,10 @@ class ArpraxProfiler:
         return results
 
     def run_stress_suite(
-        self,
-        funcs: Dict[str, Callable],
-        input_gen: Callable[[int], Any],
-        n_values: List[int] = [1000, 2000, 4000]
+            self,
+            funcs: Dict[str, Callable],
+            input_gen: Callable[[int], Any],
+            n_values: List[int] = [1000, 2000, 4000]
     ) -> Dict[int, Dict[str, float]]:
         """
         Runs multiple algorithms against multiple input sizes for a 'battle' comparison.
@@ -140,6 +164,7 @@ class ArpraxProfiler:
         Args:
             func (Callable): The function to wrap.
         """
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             start = timeit.default_timer()
@@ -152,12 +177,13 @@ class ArpraxProfiler:
             self._profile_stats[func.__name__].append(elapsed)
 
             return result
+
         return wrapper
 
     def print_decorator_report(self):
-        """Prints a summary of all functions tracked via the @profile decorator."""
-        print("\n📝 DECORATOR PROFILE REPORT")
-        print(f"{'Function':<20} | {'Calls':<6} | {'Avg Time (s)':<12} | {'Total Time'}")
+        """Prints a summary of all functions tracked via the @profile decorator and stopwatch."""
+        print("\n📝 DECORATOR & STOPWATCH PROFILE REPORT")
+        print(f"{'Label/Function':<20} | {'Calls':<6} | {'Avg Time (s)':<12} | {'Total Time'}")
         print("-" * 55)
         for fname, times in self._profile_stats.items():
             avg_t = statistics.mean(times)
@@ -218,41 +244,53 @@ class ArpraxProfiler:
             r_str = f"{row['Ratio']:.2f}" if row['Ratio'] > 0 else "-"
             print(f"{row['N']:<10} | {row['Time']:<12.5f} | {r_str:<8} | {row['Complexity']:<15}")
 
+
 # ==========================================
 # 🧪 DEMO USAGE
 # ==========================================
 if __name__ == "__main__":
     import random
+    import time
 
     profiler = ArpraxProfiler(mode="min")
 
-    # 1. Multi-Argument Test
+    # --- 1. Stopwatch Test ---
+    print("--- 1. Stopwatch Context Manager ---")
+    with profiler.stopwatch("Data Loading Simulation"):
+        time.sleep(0.1)  # Simulate loading 100k records
+
+    with profiler.stopwatch("Data Processing Simulation"):
+        time.sleep(0.05)  # Simulate processing those records
+
+
+    # --- 2. Doubling Test (Multi-Arg) ---
     def two_sum(arr, target):
         for x in arr:
             if x == target:
                 return True
         return False
 
+
     def two_sum_gen(n):
         # Returns TUPLE: (arr, target)
         return ([random.randint(0, 100) for _ in range(n)], -1)
 
-    print("--- 1. Doubling Test (Multi-Arg) ---")
+
+    print("\n--- 2. Doubling Test (Multi-Arg) ---")
     results = profiler.run_doubling_test(two_sum, two_sum_gen, rounds=5)
     profiler.print_analysis("Two Sum", results)
 
-    # 2. Plotting (Optional)
-    # profiler.plot_analysis(results, title="Two Sum Linear Scan")
+    # --- 3. Decorator Test ---
+    print("\n--- 3. Decorator Test ---")
 
-    # 3. Decorator Usage
-    print("\n--- 2. Decorator Test ---")
 
     @profiler.profile
     def sleepy_algo(x):
-        import time
         time.sleep(x)
 
+
     sleepy_algo(0.1)
     sleepy_algo(0.1)
 
+    # Note how the report now includes BOTH the decorated functions AND the stopwatch blocks!
     profiler.print_decorator_report()

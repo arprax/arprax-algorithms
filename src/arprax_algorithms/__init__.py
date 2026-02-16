@@ -1,6 +1,7 @@
-from .profiler.profiler import ArpraxProfiler
-from .utils.generators import random_array, sorted_array, reverse_sorted_array
+from .profiler import ArpraxProfiler
+from .utils import random_array, sorted_array, reverse_sorted_array
 from . import algorithms
+from . import structures  # <-- NEW: Exposing your milestone work!
 
 # Explicitly defining what is available for "from arprax_algorithms import *"
 __all__ = [
@@ -8,5 +9,6 @@ __all__ = [
     "random_array",
     "sorted_array",
     "reverse_sorted_array",
-    "algorithms"
+    "algorithms",
+    "structures"          # <-- NEW
 ]
