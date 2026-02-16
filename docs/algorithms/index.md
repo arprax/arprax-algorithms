@@ -95,4 +95,4 @@ Using the `ArpraxProfiler`, we can visualize the performance gap between $O(N^2)
 ---
 
 ### 🎓 About the Author
-**Dr. Tanmoy Chowdhury, PhD** is a specialist in IT. He founded **Arprax** to bridge the gap between academic rigor and industrial software delivery.
+[**Tanmoy Chowdhury, PhD**](https://www.tanmoychowdhury.com/){: target="_blank" } is a Computer Scientist and the founder of **Arprax Lab**. He is dedicated to **bridging academic rigor and industrial software delivery** through high-performance algorithm engineering and educational outreach.
