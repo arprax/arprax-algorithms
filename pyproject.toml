@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arprax-algorithms"
-version = "0.1.1"  # <--- Update this before your next release
+version = "0.2.0"  # <--- Update this before your next release
 description = "Industrial-Grade Algorithms by Arprax Lab"
 readme = "README.md"
 authors = [{ name="Arprax Lab", email="lab@arprax.com" }]
