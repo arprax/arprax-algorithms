@@ -79,13 +79,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.API_TOKEN_GITHUB }}
 
       - name: Python Semantic Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.16.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.API_TOKEN_GITHUB }}
 
   deploy:
     name: Build and Publish to PyPI
