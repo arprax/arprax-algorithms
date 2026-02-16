@@ -118,14 +118,15 @@ jobs:
     name: Deploy Documentation
     runs-on: ubuntu-latest
     needs: test
-    if: github.repository == 'arprax/arprax-algorithms-internal' && github.event_name == 'push'
+    if: github.repository == 'arprax/arprax-algorithms-internal' && github.ref == 'refs/heads/master'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build Docs
         run: |
-          pip install mkdocs-material mkdocstrings[python]
+          # Added mkdocs-static-i18n to support the internationalization plugin
+          pip install mkdocs-material mkdocstrings[python] mkdocs-static-i18n
           mkdocs build
 
       - name: Publish to Cloudflare Pages
