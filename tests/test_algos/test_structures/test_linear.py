@@ -1,4 +1,3 @@
-import pytest
 from arprax.algos.structures import SinglyLinkedList, DoublyLinkedList
 from arprax.algos.algorithms import has_cycle, find_cycle_start
 
@@ -112,8 +111,10 @@ def test_remove_not_found():
     dll.append(1)
     assert dll.remove(999) is False
 
+
 def test_singly_remove_final_line():
     from arprax.algos.structures.linear import SinglyLinkedList
+
     sll = SinglyLinkedList()
     sll.append(1)
     sll.append(2)

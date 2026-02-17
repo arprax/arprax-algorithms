@@ -34,9 +34,11 @@ def test_doubling_test_logic():
     """Verify OHPV2 analysis returns the correct data structure."""
     profiler = Profiler(repeats=1, warmup=0)
 
-    def mock_algo(n): return n * n
+    def mock_algo(n):
+        return n * n
 
-    def mock_gen(n): return n
+    def mock_gen(n):
+        return n
 
     results = profiler.run_doubling_test(mock_algo, mock_gen, start_n=10, rounds=3)
 
@@ -84,11 +86,14 @@ def test_stress_suite(shared_profiler):
 def test_reports(shared_profiler):
     # This executes the print statements to clear those lines
     shared_profiler.print_decorator_report()
-    shared_profiler.print_analysis("Test", [{"N": 10, "Time": 0.1, "Ratio": 0, "Complexity": "O(1)"}])
+    shared_profiler.print_analysis(
+        "Test", [{"N": 10, "Time": 0.1, "Ratio": 0, "Complexity": "O(1)"}]
+    )
 
 
 def test_profiler_modes(shared_profiler):
-    def dummy(): pass
+    def dummy():
+        pass
 
     # Hits 'median' branch (Line 55)
     shared_profiler.mode = "median"
@@ -117,9 +122,11 @@ def test_profiler_completeness(shared_profiler):
     dummy_results = [{"N": 10, "Time": 0.1, "Ratio": 2.0, "Complexity": "O(N)"}]
     shared_profiler.print_analysis("CoverageTest", dummy_results)
 
+
 def test_profiler_statistical_branches(shared_profiler):
     # Setup a dummy function
-    def dummy(): pass
+    def dummy():
+        pass
 
     # Hits Line 37: Median mode
     shared_profiler.mode = "median"
@@ -129,14 +136,23 @@ def test_profiler_statistical_branches(shared_profiler):
     shared_profiler.mode = "mean"
     shared_profiler.benchmark(dummy)
 
-def test_profiler_print_loop(shared_profiler):
-    # Hits Lines 102-104: Doubling test result printer
-    results = [{"N": 100, "Time": 0.01, "Ratio": 2.0, "Complexity": "O(N)"}]
-    shared_profiler.print_analysis("Merge Sort", results)
+
+def test_profiler_print_analysis_loop(shared_profiler):
+    """Verifies the doubling test result printer loop (Lines 102-104)."""
+    mock_data = [{"N": 10, "Time": 0.5, "Ratio": 2.5, "Complexity": "O(N)"}]
+    shared_profiler.print_analysis("Final Check", mock_data)
+
+
+def test_profiler_print_analysis_loop_extended(shared_profiler):
+    # Ensure the results list has at least one item to trigger the loop (Lines 102-104)
+    mock_results = [{"N": 100, "Time": 0.001, "Ratio": 2.0, "Complexity": "O(N)"}]
+    # This will now execute the f-string print inside the loop
+    shared_profiler.print_analysis("Merge Sort", mock_results)
 
 
 def test_profiler_comprehensive(shared_profiler):
-    def dummy(): pass
+    def dummy():
+        pass
 
     # Hits Line 37: Median mode
     shared_profiler.mode = "median"
@@ -153,6 +169,7 @@ def test_profiler_comprehensive(shared_profiler):
 
 def test_profiler_final_gaps():
     from arprax.algos import Profiler
+
     # Use a fresh instance to avoid shared state issues
     p = Profiler(repeats=1, warmup=0)
 
@@ -170,7 +187,8 @@ def test_profiler_final_gaps():
 
 
 def test_profiler_statistical_modes(shared_profiler):
-    def dummy_func(): return None
+    def dummy_func():
+        return None
 
     # Force the 'median' branch (Line 37)
     shared_profiler.mode = "median"
@@ -184,17 +202,9 @@ def test_profiler_statistical_modes(shared_profiler):
     shared_profiler.mode = "min"
 
 
-def test_profiler_print_analysis_loop(shared_profiler):
-    # Ensure the results list has at least one item to trigger the loop (Lines 102-104)
-    mock_results = [
-        {"N": 100, "Time": 0.001, "Ratio": 2.0, "Complexity": "O(N)"}
-    ]
-    # This will now execute the f-string print inside the loop
-    shared_profiler.print_analysis("Merge Sort", mock_results)
-
-
 def test_profiler_warmup_execution():
     from arprax.algos import Profiler
+
     # warmup=1 forces the loop (Lines 37-38) to execute
     p = Profiler(warmup=1, repeats=1)
 
@@ -203,14 +213,10 @@ def test_profiler_warmup_execution():
 
     p.benchmark(dummy_func, "test_data")
 
-def test_profiler_print_loop(shared_profiler):
-    # A populated list forces the loop body (Lines 102-104) to run
-    mock_data = [{"N": 10, "Time": 0.5, "Ratio": 2.5, "Complexity": "O(N)"}]
-    shared_profiler.print_analysis("Final Check", mock_data)
-
 
 def test_profiler_print_analysis_full_coverage():
     from arprax.algos import Profiler
+
     p = Profiler()
 
     # We supply TWO rows to force both branches of the ternary operator on Line 102
@@ -218,7 +224,7 @@ def test_profiler_print_analysis_full_coverage():
         # Row 1: Ratio > 0 (Triggers the true branch)
         {"N": 100, "Time": 0.05, "Ratio": 2.0, "Complexity": "O(N)"},
         # Row 2: Ratio == 0 (Triggers the 'else "-"' branch)
-        {"N": 200, "Time": 0.05, "Ratio": 0.0, "Complexity": "O(1)"}
+        {"N": 200, "Time": 0.05, "Ratio": 0.0, "Complexity": "O(1)"},
     ]
 
     # This executes Lines 102-104 completely
@@ -227,6 +233,7 @@ def test_profiler_print_analysis_full_coverage():
 
 def test_print_decorator_report_loop_execution():
     from arprax.algos import Profiler
+
     p = Profiler()
 
     # Inject mock data so the dictionary is NOT empty
@@ -235,14 +242,18 @@ def test_print_decorator_report_loop_execution():
     # Now the for loop body (Lines 102-104) MUST execute to calculate mean and sum
     p.print_decorator_report()
 
+
 def test_profiler_high_growth_branch():
     from arprax.algos import Profiler
+
     p = Profiler()
     # 10.0 falls outside all defined ranges, hitting the final return (Line 115)
     assert p._guess_complexity(10.0) == "High Growth"
 
+
 def test_profiler_cubic_growth():
     from arprax.algos import Profiler
+
     p = Profiler()
     # 8.0 is the classic doubling ratio for N^3 (2^3 = 8)
     assert p._guess_complexity(8.0) == "O(N^3)"
