@@ -68,6 +68,25 @@ class SinglyLinkedList:
         elements = [str(data) for data in self]
         return " -> ".join(elements) + " -> NULL"
 
+    def remove(self, data: Any) -> bool:
+        """Removes the first occurrence of data. Returns True if successful."""
+        if not self.head:  # Missing line 68-69 logic
+            return False
+
+        if self.head.data == data:
+            self.head = self.head.next
+            self._size -= 1
+            return True
+
+        current = self.head
+        while current.next:
+            if current.next.data == data:
+                current.next = current.next.next
+                self._size -= 1
+                return True
+            current = current.next
+        return False
+
 
 class DoublyLinkedList:
     """
@@ -127,3 +146,23 @@ class DoublyLinkedList:
             elements.append(str(current.data))
             current = current.prev
         return " <-> ".join(elements)
+
+    def remove(self, data: Any) -> bool:
+        """Removes a node from the doubly linked list in O(N) time."""
+        current = self.head
+        while current:
+            if current.data == data:
+                if current.prev:
+                    current.prev.next = current.next
+                else:
+                    self.head = current.next
+
+                if current.next:
+                    current.next.prev = current.prev
+                else:
+                    self.tail = current.prev
+
+                self._size -= 1
+                return True
+            current = current.next
+        return False

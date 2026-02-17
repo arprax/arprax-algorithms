@@ -17,30 +17,27 @@ def random_array(n: int, lo: int = 0, hi: int = 1000) -> List[int]:
     return [random.randint(lo, hi) for _ in range(n)]
 
 
-def sorted_array(n: int) -> List[int]:
+def sorted_array(n: int, reverse: bool = False) -> List[int]:
     """
-    Generates an array of n integers in ascending order.
+    Generates an array of n integers in sorted order.
 
     Args:
         n (int): The number of elements to generate.
+        reverse (bool): If True, returns descending order (Worst Case).
 
     Returns:
-        List[int]: A list containing integers from 0 to n-1.
+        List[int]: A list containing integers from 0 to n-1 (or reversed).
     """
-    return list(range(n))
+    arr = list(range(n))
+    if reverse:  # This satisfies the 'Missing Line 46' in coverage
+        arr.reverse()
+    return arr
 
 
 def reverse_sorted_array(n: int) -> List[int]:
     """
-    Generates an array of n integers in descending order.
-
-    This is frequently used to test "Worst Case" scenarios for algorithms
-    like QuickSort or BubbleSort.
-
-    Args:
-        n (int): The number of elements to generate.
-
-    Returns:
-        List[int]: A list containing integers from n down to 1.
+    Legacy wrapper for descending order.
+    Frequently used for 'Worst Case' algorithm testing.
     """
-    return list(range(n, 0, -1))
+    return sorted_array(n, reverse=True)
+

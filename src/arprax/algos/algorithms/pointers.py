@@ -4,7 +4,7 @@ Contains two-pointer algorithms like Floyd's Cycle Detection (Tortoise & Hare).
 """
 
 from typing import Optional
-from ..structures.linked_list import Node
+from arprax.algos.structures.linear import Node
 
 
 def has_cycle(head: Optional[Node]) -> bool:

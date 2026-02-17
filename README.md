@@ -9,7 +9,7 @@ Built by **Arprax Lab**, this toolkit is designed for the "Applied Data Intellig
 ## 🚀 Features
 
 * **ArpraxProfiler:** High-precision analysis with GC control, warmup cycles, and OHPV2 (Doubling Test) complexity estimation.
-* **Industrial Generators:** Data factories for random, sorted, and reversed datasets.
+* **Industrial Utils:** High-performance data factories (random_array, sorted_array) for robust benchmarking.
 * **Standard Library:** High-performance implementations of classic algorithms (Merge Sort, Bubble Sort, etc.) with strict type hinting.
 
 ## 📦 Installation
@@ -23,16 +23,17 @@ pip install arprax-algorithms
 Once installed, you can immediately run a performance battle between algorithms.
 
 ```python
-from arprax_algorithms import ArpraxProfiler, generators, algorithms
+from arprax.algos import Profiler
+from arprax.algos.utils import random_array  # Clean import from your new 'utils'
+from arprax.algos.algorithms import merge_sort # Using the 'lifted' API
 
 # 1. Initialize the industrial profiler
-profiler = ArpraxProfiler(mode="min", repeats=5)
+profiler = Profiler(mode="min", repeats=5)
 
 # 2. Run a doubling test (OHPV2 Analysis)
-# This measures how Merge Sort scales as data size (N) doubles
 results = profiler.run_doubling_test(
-    algorithms.sorting.merge_sort, 
-    generators.random_array,
+    merge_sort,
+    random_array,
     start_n=500,
     rounds=5
 )

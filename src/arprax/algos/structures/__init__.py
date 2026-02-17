@@ -1,4 +1,4 @@
-from .linked_list import Node, DoublyNode, SinglyLinkedList, DoublyLinkedList
+from .linear import Node, DoublyNode, SinglyLinkedList, DoublyLinkedList
 
 __all__ = [
     "Node",

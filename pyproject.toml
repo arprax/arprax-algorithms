@@ -20,12 +20,19 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 
+# --- Namespace Configuration ---
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["arprax_algorithms*"]
+include = ["arprax*"] # Finds arprax.algos and future pro/enterprise tiers
+
+# --- Pytest Configuration ---
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"] # Tells pytest to look in src/ for the arprax namespace
+addopts = "--cov=arprax.algos --cov-report=term-missing" # Auto-triggers coverage
 
 [tool.semantic_release]
 version_variable = ["pyproject.toml:project.version"]
@@ -34,7 +41,7 @@ upload_to_pypi = false  # pipeline handles this
 build_command = "" # false: GitHub Action handles the build
 
 [project.optional-dependencies]
-dev = ["build", "twine", "pytest", "ruff"] # <--- Added ruff here
+dev = ["build", "twine", "pytest", "pytest-cov", "ruff"]
 
 [project.urls]
 "Homepage" = "https://algorithms.arprax.com/"
