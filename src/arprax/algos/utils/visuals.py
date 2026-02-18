@@ -15,6 +15,11 @@ def animate_sort(
         sort_func (Callable): A generator function that yields List[int] states.
         title (str): The title displayed at the top of the animation window.
     """
+
+    if not arr:
+        print("Array is empty, nothing to visualize.")
+        return
+
     try:
         import matplotlib.pyplot as plt
         import matplotlib.animation as animation
@@ -37,15 +42,23 @@ def animate_sort(
     def update(data):
         if isinstance(data, int):
             return bar_rects
+
         for rect, val in zip(bar_rects, data):
             rect.set_height(val)
+
         iteration[0] += 1
         text.set_text(f"Operations: {iteration[0]}")
         return bar_rects
 
     anim = animation.FuncAnimation(
-        fig, func=update, frames=sort_func(arr), interval=50, repeat=False, blit=False
+        fig,
+        func=update,
+        frames=sort_func(arr),
+        interval=50,
+        repeat=False,
+        blit=False,
     )
+
     plt.show()
     return anim
 
@@ -59,6 +72,13 @@ def animate_list_search(sll, target: Any, title: str = "Singly Linked List Searc
         target (Any): The value being searched for.
         title (str): The title for the plot window.
     """
+
+    nodes = list(sll)
+
+    if not nodes:
+        print("List is empty, nothing to visualize.")
+        return
+
     try:
         import networkx as nx
         import matplotlib.pyplot as plt
@@ -68,41 +88,30 @@ def animate_list_search(sll, target: Any, title: str = "Singly Linked List Searc
         )
         return
 
-    # Convert the list to a list of values for easy graph mapping
-    nodes = list(sll)
-    if not nodes:
-        print("List is empty, nothing to visualize.")
-        return
-
-    # 1. Create Graph structure
     G = nx.DiGraph()
     for i in range(len(nodes)):
         G.add_node(i, label=str(nodes[i]))
         if i < len(nodes) - 1:
             G.add_edge(i, i + 1)
 
-    # 2. Define Layout (Linear)
     pos = {i: (i, 0) for i in range(len(nodes))}
     labels = {i: G.nodes[i]["label"] for i in range(len(nodes))}
 
-    plt.ion()  # Enable interactive mode
+    plt.ion()
     fig, ax = plt.subplots(figsize=(12, 3))
 
-    # 3. Step through traversal
-    # We use the 'traverse' method from your updated linear.py
-    for idx, node in enumerate(sll.traverse()):
+    for idx, _ in enumerate(sll.traverse()):
         ax.clear()
         ax.set_title(f"{title} | Searching for: {target}")
 
-        # Color nodes: Red = Current, Green = Found, Blue = Neutral
         node_colors = []
         for i in range(len(nodes)):
             if i == idx and nodes[i] == target:
-                node_colors.append("#28a745")  # Green
+                node_colors.append("#28a745")
             elif i == idx:
-                node_colors.append("#dc3545")  # Red
+                node_colors.append("#dc3545")
             else:
-                node_colors.append("#007acc")  # Blue
+                node_colors.append("#007acc")
 
         nx.draw(
             G,
@@ -119,6 +128,7 @@ def animate_list_search(sll, target: Any, title: str = "Singly Linked List Searc
         )
 
         plt.pause(0.8)
+
         if nodes[idx] == target:
             ax.set_title(f"Target {target} FOUND at Index {idx}!")
             plt.pause(2.0)
