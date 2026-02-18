@@ -1,7 +1,8 @@
 """
 Arprax Algos: Industrial-Grade Algorithms and Data Structures.
 """
-from .profiler import Profiler
+
+from arprax.algos.utils.profiler import Profiler
 
 # Re-exporting for top-level access
 __all__ = ["Profiler"]

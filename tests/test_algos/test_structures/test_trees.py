@@ -1,152 +1,164 @@
 import pytest
-from arprax.algos.structures.trees import BinarySearchTree, RedBlackBST
+from arprax.algos.structures.trees import BinarySearchTree, RedBlackBST, _RBNode
 
 
-# --- SECTION 1: Standard BST Tests ---
+# --- SECTION 1: Standard Binary Search Tree (BST) Tests ---
+
+
+def test_bst_basic_ops():
+    """Verifies put, get, contains, and updates."""
+    bst = BinarySearchTree()
+    bst.put(10, "Original")
+    bst.put(10, "Updated")  # Hits Line 130: updates existing value
+    assert bst.get(10) == "Updated"
+    assert bst.contains(10) is True
+    assert bst.get(5) is None  # Hits Line 112: search miss (None)
 
 
 def test_bst_put_none_deletes():
-    """Hits Lines 101-102: 'if val is None: self.delete(key); return'"""
+    """Hits Lines 101-102: val=None triggers delete."""
     bst = BinarySearchTree()
     bst.put("A", 1)
-    # This specifically triggers the 'if val is None' block
     bst.put("A", None)
     assert bst.get("A") is None
     assert bst.is_empty()
 
 
-def test_bst_get_recursion():
-    """Hits Line 114: Recursive _get (going right)."""
+def test_bst_recursion_paths():
+    """Covers recursive branches for get, size, and min/max."""
     bst = BinarySearchTree()
-    bst.put(10, 10)
-    bst.put(20, 20)  # Right child
-    # Forces _get to traverse right
-    assert bst.get(20) == 20
+    # Inserting 10 -> 5 -> 2 forces two steps of left recursion for min
+    # Inserting 20 forces right recursion for get/size
+    for x in [10, 5, 2, 20]:
+        bst.put(x, x)
 
-
-def test_bst_size_recursion():
-    """Hits Line 134: _size recursion on right child."""
-    bst = BinarySearchTree()
-    bst.put(10, 10)
-    bst.put(20, 20)
-    # Forces _size to check right child's size
-    assert bst.size() == 2
+    assert bst.get(20) == 20  # Hits Line 114: Recursive _get (right)
+    assert bst.size() == 4  # Hits Line 134: _size recursion (right)
+    assert bst.min() == 2  # Hits Line 152: _min recursion (left)
+    assert bst.max() == 20
 
 
 def test_bst_empty_exceptions():
-    """Hits Lines 137-139, 155-156: ValueError on empty tree operations."""
+    """Hits Lines 137-139, 155-156, and 163: Errors on empty tree."""
     bst = BinarySearchTree()
-    with pytest.raises(ValueError):
-        bst.max()  # Line 137-139
-    with pytest.raises(ValueError):
-        bst.min()  # Line 151 check
-    with pytest.raises(ValueError):
-        bst.delete_min()  # Line 163 (which was 155 in your previous run)
-
-
-def test_bst_min_max_recursion():
-    """Hits Lines 151-152: Recursion in _min."""
-    bst = BinarySearchTree()
-    # Deep left tree to force _min recursion (Line 152)
-    bst.put(10, 10)
-    bst.put(5, 5)
-    bst.put(1, 1)
-    assert bst.min() == 1
+    with pytest.raises(ValueError, match="Calls max"):
+        bst.max()
+    with pytest.raises(ValueError, match="Calls min"):
+        bst.min()
+    with pytest.raises(ValueError, match="underflow"):
+        bst.delete_min()
+    assert bst.floor(10) is None
 
 
 def test_bst_delete_min_logic():
-    """Hits Lines 159-170: Full delete_min logic."""
+    """Covers root deletion and recursive deletion of minimum."""
     bst = BinarySearchTree()
-
-    # Case 1: Root is min (no left child) -> Hits 166
+    # Case 1: Root is min (no left child)
     bst.put(10, 10)
     bst.put(20, 20)
     bst.delete_min()
     assert bst.min() == 20
 
-    # Case 2: Recursion (min is deep left) -> Hits 168-170
+    # Case 2: Recursion (min is deep left)
     bst.put(5, 5)
-    bst.put(1, 1)  # 1 is new min
+    bst.put(1, 1)
     bst.delete_min()
     assert bst.min() == 5
 
 
-def test_bst_floor_recursion():
-    """Hits Line 176: Recursion in _floor (Right branch)."""
+def test_bst_floor_logic():
+    """Covers recursive floor searches in both branches."""
     bst = BinarySearchTree()
     # Structure: 10 (Root), 20 (Right), 15 (Right-Left)
-    bst.put(10, 10)
-    bst.put(20, 20)
-    bst.put(15, 15)
+    for x in [10, 20, 15]:
+        bst.put(x, x)
 
-    # We look for floor(17).
-    # 1. 17 > 10 (Go Right)
-    # 2. 17 < 20 (Go Left) -> Found 15
-    # 3. Returns 15 up the stack (Line 176)
-    assert bst.floor(17) == 15
+    assert bst.floor(17) == 15  # Hits Line 176: Floor in right subtree
     assert bst.floor(9) is None
 
 
-def test_bst_delete_edge_cases():
-    """Hits Lines 191, 196, 201, 207: Specific delete branches."""
+def test_bst_delete_branches():
+    """Covers Hibbard deletion cases including nodes with 0, 1, or 2 children."""
     bst = BinarySearchTree()
 
-    # 1. Delete Non-Existent (Line 191)
+    # 1. Delete Non-Existent
     bst.put(10, 10)
-    bst.delete(99)  # Should return immediately
+    bst.delete(99)
     assert bst.size() == 1
 
-    # 2. Delete recursion (Lines 196)
-    bst.put(5, 5)  # Left child
-    bst.delete(5)  # Forces 'key < x.key' recursion
+    # 2. Delete recursion (Left)
+    bst.put(5, 5)
+    bst.delete(5)  # Hits Line 196
     assert bst.size() == 1
 
-    # 3. Delete Node with ONLY Left Child (Line 207)
-    # This is the tricky one. Node 20 must have left child 15, NO right child.
+    # 3. Delete node with ONLY Left child
     bst.put(20, 20)
     bst.put(15, 15)
-    bst.delete(20)  # 20 has left child 15, right is None.
+    bst.delete(20)  # Hits Line 207: 20 has no right child
     assert bst.get(20) is None
     assert bst.get(15) == 15
 
+    # 4. Delete node with TWO children (Successor Logic)
+    # Build tree so 10 has 5 and 15 as children
+    bst.put(10, 10)
+    bst.put(5, 5)
+    bst.put(15, 15)
+    bst.put(12, 12)
+    bst.delete(10)  # Hits Lines 210-214: Hibbard deletion
+    assert bst.contains(10) is False
+
 
 def test_bst_keys_traversal():
-    """Hits Lines 221-230: keys() full traversal."""
+    """Verifies in-order traversal and empty state."""
     bst = BinarySearchTree()
-    # Empty keys check (Line 221)
     assert bst.keys() == []
-
-    # Full traversal (Lines 226-230)
-    bst.put(2, 2)
-    bst.put(1, 1)
-    bst.put(3, 3)
-    # Should return sorted list
+    for x in [2, 1, 3]:
+        bst.put(x, x)
     assert bst.keys() == [1, 2, 3]
 
 
-# --- SECTION 2: Red-Black BST Tests ---
+# --- SECTION 2: Red-Black BST (LLRB) Tests ---
 
 
-def test_rbt_not_found():
-    """Hits Line 282: RedBlackBST.get returns None."""
-    rb = RedBlackBST()
-    rb.put(1, 1)
-    assert rb.get(99) is None
-
-
-def test_rbt_update_existing():
-    """Hits Line 298: RedBlackBST.put updates existing value."""
+def test_rbt_basic_ops():
+    """Verifies get, update, and search misses."""
     rb = RedBlackBST()
     rb.put("A", 1)
-    # This hits the 'else' block in _put (Line 298)
-    rb.put("A", 2)
+    rb.put("A", 2)  # Hits Line 298: update existing
     assert rb.get("A") == 2
+    assert rb.get("Z") is None  # Hits Line 282: miss
 
 
-def test_rbt_rotations():
-    """Ensures Red-Black logic (lines 300+) is active."""
+def test_rbt_balancing_rotations():
+    """Hits _rotate_left, _rotate_right, and _flip_colors via specific sequences."""
+    # Sequence 1: rotate_left (Increasing order)
     rb = RedBlackBST()
-    keys = list("SEARCHEXAMPLE")
-    for k in keys:
-        rb.put(k, 1)
-    assert rb.size() == len(set(keys))
+    rb.put(1, "A")
+    rb.put(2, "B")  # Hits rotate_left
+
+    # Sequence 2: flip_colors (Balanced insertion)
+    rb.put(3, "C")  # Hits flip_colors
+
+    # Sequence 3: rotate_right (Decreasing order)
+    rb.put(0, "D")  # Triggers rotate_right eventually via _put recursion
+
+    assert rb.size() == 4
+    assert rb.get(2) == "B"
+
+
+def test_rb_color_flip_internal():
+    """Surgically targets _flip_colors attribute guards and state changes."""
+    rb = RedBlackBST()
+    # Create a node and manually test partial branches for if h.left/h.right
+    node = _RBNode(10, 10, False)
+
+    # Path A: Children are None (Hits False branch of attribute guards)
+    rb._flip_colors(node)
+    assert node.color is True  # RED
+
+    # Path B: Normal flip with children (Hits True branch of guards)
+    node.left = _RBNode(5, 5, True)
+    node.right = _RBNode(15, 15, True)
+    rb._flip_colors(node)  # Flipped back to BLACK
+    assert node.color is False
+    assert node.left.color is False

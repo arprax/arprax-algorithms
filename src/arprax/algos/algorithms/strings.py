@@ -266,3 +266,101 @@ class Huffman:
             return
         Huffman._build_code(x.left, s + "0", codes)
         Huffman._build_code(x.right, s + "1", codes)
+
+
+class LZW:
+    """
+    Lempel-Ziv-Welch (LZW) Compression.
+
+    A dictionary-based compression algorithm that is particularly effective for
+    data with repeated patterns. It builds a dictionary of substrings encountered
+    in the data and represents them with shorter codes.
+
+    Reference:
+        Algorithms, 4th Edition by Sedgewick and Wayne, Section 5.5.
+    """
+
+    @staticmethod
+    def compress(s: str) -> List[int]:
+        """
+        Compresses a string into a list of dictionary indices.
+
+        Time Complexity: O(N) where N is the length of the string.
+        Space Complexity: O(K) where K is the number of unique substrings.
+
+        Args:
+            s (str): The input string to compress.
+
+        Returns:
+            List[int]: A list of integer codes representing the compressed data.
+        """
+        if not s:
+            return []
+
+        # Initialize dictionary with individual characters (Extended ASCII)
+        r = 256
+        st = {chr(i): i for i in range(r)}
+        dict_size = r
+
+        w = ""
+        result = []
+        for c in s:
+            wc = w + c
+            if wc in st:
+                w = wc
+            else:
+                result.append(st[w])
+                # Add new substring to the dictionary
+                st[wc] = dict_size
+                dict_size += 1
+                w = c
+
+        # Append code for the remaining prefix
+        if w:
+            result.append(st[w])
+        return result
+
+    @staticmethod
+    def decompress(compressed: List[int]) -> str:
+        """
+        Decompresses a list of LZW codes back into the original string.
+
+        Args:
+            compressed (List[int]): The list of integer codes to decompress.
+
+        Returns:
+            str: The original uncompressed string.
+
+        Raises:
+            ValueError: If an invalid or corrupted code is encountered.
+        """
+        if not compressed:
+            return ""
+
+        # Initialize dictionary with individual characters
+        r = 256
+        st = {i: chr(i) for i in range(r)}
+        dict_size = r
+
+        # Clone list to avoid modifying the input
+        codes = list(compressed)
+        w = st[codes.pop(0)]
+        result = [w]
+
+        for k in codes:
+            if k in st:
+                entry = st[k]
+            elif k == dict_size:
+                # Handle the special case: w + w[0] (e.g., ABABA)
+                entry = w + w[0]
+            else:
+                raise ValueError(f"Invalid compressed code: {k}")
+
+            result.append(entry)
+
+            # Add new substring to the dictionary
+            st[dict_size] = w + entry[0]
+            dict_size += 1
+            w = entry
+
+        return "".join(result)

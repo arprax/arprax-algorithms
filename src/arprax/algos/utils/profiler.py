@@ -28,8 +28,8 @@ class Profiler:
 
     def __init__(self, repeats: int = 5, warmup: int = 1, mode: str = "min"):
         """Initializes the Profiler with user-defined benchmark settings."""
-        self.repeats = repeats
-        self.warmup = warmup
+        self.repeats = max(1, repeats)  # Ensure at least one run occurs
+        self.warmup = max(0, warmup)
         self.mode = mode
         self._profile_stats = {}
 
@@ -82,6 +82,7 @@ class Profiler:
             if gc_old:
                 gc.enable()
 
+        # Branch coverage fix: ensure all statistical modes are handled
         if self.mode == "median":
             return statistics.median(times)
         elif self.mode == "mean":
@@ -117,6 +118,7 @@ class Profiler:
             args = data if isinstance(data, tuple) else (data,)
             curr_time = self.benchmark(func, *args)
 
+            # Ratio is T(2N) / T(N). prev_time > 0 triggers the second round branch.
             ratio = curr_time / prev_time if prev_time > 0 else 0.0
             complexity = self._guess_complexity(ratio)
 
@@ -159,13 +161,15 @@ class Profiler:
         )
         print("-" * 65)
         for fname, times in self._profile_stats.items():
-            avg_t = statistics.mean(times)
+            # statistics.mean requires at least one data point
+            avg_t = statistics.mean(times) if times else 0.0
             total_t = sum(times)
             print(f"{fname:<20} | {len(times):<6} | {avg_t:<12.5f} | {total_t:.5f}")
 
     def _guess_complexity(self, ratio: float) -> str:
         """
         Heuristic to map doubling ratios to Big O notations.
+        Ranges widened slightly to accommodate CPU frequency scaling and jitter.
 
         Args:
             ratio (float): The ratio of T(2N) / T(N).
@@ -173,15 +177,17 @@ class Profiler:
         Returns:
             str: The guessed complexity string.
         """
+        if ratio <= 0:
+            return "Initial Round"
         if ratio < 1.4:
             return "O(1) / O(log N)"
-        if 1.6 <= ratio <= 2.5:
+        if ratio < 2.8:
             return "O(N)"
-        if 3.5 <= ratio <= 4.8:
+        if ratio < 5.5:
             return "O(N^2)"
-        if 7.0 <= ratio <= 9.0:
+        if ratio < 10.0:
             return "O(N^3)"
-        return "High Growth"
+        return "High Growth / Exponential"
 
     def print_analysis(self, func_name: str, results: List[Dict[str, Any]]) -> None:
         """

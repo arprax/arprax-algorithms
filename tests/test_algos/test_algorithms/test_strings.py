@@ -1,4 +1,11 @@
-from arprax.algos.algorithms.strings import lsd_sort, msd_sort, KMP, BoyerMoore, Huffman
+from arprax.algos.algorithms.strings import (
+    lsd_sort,
+    msd_sort,
+    KMP,
+    BoyerMoore,
+    Huffman,
+    LZW,
+)
 
 
 # --- Sort Tests ---
@@ -71,3 +78,41 @@ def test_huffman_edge_cases():
     enc, codes = Huffman.compress("AAAA")
     assert codes["A"] == "0"
     assert enc == "0000"
+
+
+def test_lzw_round_trip():
+    """Test standard compression and decompression cycle for repeated patterns."""
+    text = "TOBEORNOTTOBEORTOBEORNOT"
+    compressed = LZW.compress(text)
+
+    # Ensure it actually compresses the data
+    assert len(compressed) < len(text)
+
+    # Verify the round-trip result
+    decompressed = LZW.decompress(compressed)
+    assert text == decompressed
+
+
+def test_lzw_edge_cases():
+    """Test empty inputs for both compression and decompression."""
+    # Empty string compression
+    assert LZW.compress("") == []
+
+    # Empty list decompression
+    assert LZW.decompress([]) == ""
+
+
+def test_lzw_special_case():
+    """Test the ABABA pattern where the code for the next string is used immediately."""
+    text = "ABABA"
+    compressed = LZW.compress(text)
+    assert LZW.decompress(compressed) == text
+
+
+def test_lzw_errors():
+    """Test error handling for corrupted or invalid compression codes."""
+    import pytest
+
+    # 999 is far outside the starting R=256 and the small dict_size for this list
+    with pytest.raises(ValueError, match="Invalid compressed code"):
+        LZW.decompress([65, 999])

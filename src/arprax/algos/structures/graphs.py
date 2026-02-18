@@ -275,3 +275,101 @@ class EdgeWeightedGraph:
     def _validate_vertex(self, v: int) -> None:
         if v < 0 or v >= self._V:
             raise IndexError(f"Vertex {v} is not between 0 and {self._V - 1}")
+
+
+class FlowEdge:
+    """
+    Capacitated edge with flow.
+    Used for Max-Flow / Min-Cut algorithms.
+    """
+
+    def __init__(self, v: int, w: int, capacity: float):
+        """Initializes a flow edge from v to w with given capacity."""
+        if capacity < 0:
+            raise ValueError("Edge capacity must be non-negative")
+        self._v = v
+        self._w = w
+        self._capacity = capacity
+        self._flow = 0.0
+
+    @property
+    def capacity(self) -> float:
+        return self._capacity
+
+    @property
+    def flow(self) -> float:
+        return self._flow
+
+    def from_v(self) -> int:
+        """Returns the tail of the edge."""
+        return self._v
+
+    def to_w(self) -> int:
+        """Returns the head of the edge."""
+        return self._w
+
+    def other(self, vertex: int) -> int:
+        """Returns the endpoint other than the given vertex."""
+        if vertex == self._v:
+            return self._w
+        if vertex == self._w:
+            return self._v
+        raise ValueError("Illegal endpoint")
+
+    def residual_capacity_to(self, vertex: int) -> float:
+        """Returns the residual capacity toward the given vertex."""
+        if vertex == self._v:  # Backward edge
+            return self._flow
+        elif vertex == self._w:  # Forward edge
+            return self._capacity - self._flow
+        else:
+            raise ValueError("Illegal endpoint")
+
+    def add_residual_flow_to(self, vertex: int, delta: float) -> None:
+        """Adds residual flow toward the given vertex."""
+        if vertex == self._v:  # Backward edge
+            self._flow -= delta
+        elif vertex == self._w:  # Forward edge
+            self._flow += delta
+        else:
+            raise ValueError("Illegal endpoint")
+
+    def __str__(self) -> str:
+        return f"{self._v}->{self._w} {self._flow}/{self._capacity}"
+
+
+class FlowNetwork:
+    """
+    Network of capacitated flow edges.
+    """
+
+    def __init__(self, V: int):
+        if V < 0:
+            raise ValueError("Number of vertices must be non-negative")
+        self._V = V
+        self._E = 0
+        self._adj: List[List[FlowEdge]] = [[] for _ in range(V)]
+
+    def V(self) -> int:
+        return self._V
+
+    def E(self) -> int:
+        return self._E
+
+    def add_edge(self, e: FlowEdge) -> None:
+        v = e.from_v()
+        w = e.to_w()
+        self._adj[v].append(e)
+        self._adj[w].append(e)
+        self._E += 1
+
+    def adj(self, v: int) -> Iterable[FlowEdge]:
+        return self._adj[v]
+
+    def edges(self) -> Iterable[FlowEdge]:
+        all_edges = []
+        for v in range(self._V):
+            for e in self._adj[v]:
+                if e.to_w() != v:  # Avoid double-counting
+                    all_edges.append(e)
+        return all_edges
