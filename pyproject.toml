@@ -28,6 +28,7 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["arprax*"] # Finds arprax.algos and future pro/enterprise tiers
+namespaces = true
 
 # --- Pytest Configuration ---
 [tool.pytest.ini_options]
