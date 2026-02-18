@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from arprax.algos.utils.visuals import animate_sort, animate_list_search
+from examples.visuals import animate_sort, animate_list_search
 from arprax.algos.structures.linear import SinglyLinkedList
 
 

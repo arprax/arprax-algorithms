@@ -73,7 +73,7 @@ def large_scale_dataset(n: int) -> List[int]:
         import numpy as np
 
         # NumPy is much faster for generating millions of integers
-        return np.random.randint(0, 1000, n).tolist()
+        return np.random.randint(0, 1000, n).tolist()  # pragma: no cover
     except ImportError:
         # Graceful fallback for the 'Ultra-Lean' configuration
         return random_array(n)

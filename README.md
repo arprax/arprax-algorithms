@@ -48,15 +48,23 @@ results = profiler.run_doubling_test(
 # 3. Print the performance analysis
 profiler.print_analysis("Merge Sort", results)
 ```
-We've included a performance profiler demo in the root directory. To see the library in action:
+## 🎓 Demonstrations & Pedagogy
+
+We provide high-fidelity demonstrations to show the library in action. These are located in the `examples/` directory to maintain a decoupled, industrial-grade production environment.
+
+### Performance Profiling
+Measure execution time, memory usage, and operation counts across different input sizes ($N$):
 ```bash
-python demo_profiler.py
+python examples/demo_profiler.py
 ```
 
-We've included a visualization demo in the root directory. To see the library in action:
+### Algorithm Visualization
+View real-time, frame-by-frame animations of sorting and search logic:
 ```bash
-python demo_visualizer.py
+python examples/visualizer.py
 ```
+> [!TIP]
+> For detailed instructions on running these demos and setting up the visualization environment, see our [**Examples Guide**](./examples/GETTING_STARTED.md).
 
 ## 🏗️ The Arprax Philosophy
 

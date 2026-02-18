@@ -68,3 +68,13 @@ def test_generators_fallback_coverage():
         data = large_scale_dataset(10)
         assert len(data) == 10
         assert isinstance(data, list)
+
+
+def test_random_list_generator():
+    from arprax.algos.utils.generators import large_scale_dataset
+
+    # Test with a standard value
+    result = large_scale_dataset(5)
+    assert len(result) == 5
+    # Test with zero (the likely missing edge case)
+    assert len(large_scale_dataset(0)) == 0
