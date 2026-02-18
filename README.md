@@ -15,7 +15,14 @@ Built by **Arprax Lab**, this toolkit is designed for the "Applied Data Intellig
 ## 📦 Installation
 
 ```bash
+# Core only
 pip install arprax-algorithms
+
+# With visual tools
+pip install arprax-algorithms[visuals]
+
+# With research tools
+pip install arprax-algorithms[research]
 ```
 
 ## 🔬 Quick Start: Benchmarking
@@ -40,6 +47,15 @@ results = profiler.run_doubling_test(
 
 # 3. Print the performance analysis
 profiler.print_analysis("Merge Sort", results)
+```
+We've included a performance profiler demo in the root directory. To see the library in action:
+```bash
+python demo_profiler.py
+```
+
+We've included a visualization demo in the root directory. To see the library in action:
+```bash
+python demo_visualizer.py
 ```
 
 ## 🏗️ The Arprax Philosophy

@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "arprax-algorithms"
 version = "0.2.0"  # <--- Update this before your next release
 description = "Industrial-Grade Algorithms by Arprax Lab"
+dependencies = []
 readme = "README.md"
 authors = [{ name="Arprax Lab", email="lab@arprax.com" }]
 requires-python = ">=3.9"
@@ -42,6 +43,8 @@ build_command = "" # false: GitHub Action handles the build
 
 [project.optional-dependencies]
 dev = ["build", "twine", "pytest", "pytest-cov", "ruff"]
+research = ["numpy>=1.26.0"]
+visuals = ["matplotlib>=3.8.0", "networkx>=3.0"]
 
 [project.urls]
 "Homepage" = "https://algorithms.arprax.com/"

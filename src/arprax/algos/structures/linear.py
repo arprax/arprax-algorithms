@@ -1,56 +1,107 @@
 """
-Arprax Algorithms: Linked List Implementations
-Provides industrial-grade Singly and Doubly Linked Lists.
+Arprax Algorithms: Linear Data Structures
+Provides industrial-grade Singly and Doubly Linked Lists with generator support for visualization.
 """
 
-from typing import Any, Optional, Iterator
+from typing import Any, Optional, Iterator, Generator
 
 
 class Node:
-    """A standard node for a Singly Linked List."""
+    """
+    A standard node for a Singly Linked List.
+
+    Attributes:
+        data (Any): The value stored in the node.
+        next (Optional[Node]): Reference to the next node in the sequence.
+    """
 
     def __init__(self, data: Any):
+        """Initializes a new Singly Linked List node."""
         self.data = data
-        self.next: Optional['Node'] = None
+        self.next: Optional["Node"] = None
 
 
 class DoublyNode:
-    """A node for a Doubly Linked List containing prev and next references."""
+    """
+    A node for a Doubly Linked List containing prev and next references.
+
+    Attributes:
+        data (Any): The value stored in the node.
+        next (Optional[DoublyNode]): Reference to the next node.
+        prev (Optional[DoublyNode]): Reference to the previous node.
+    """
 
     def __init__(self, data: Any):
+        """Initializes a new Doubly Linked List node."""
         self.data = data
-        self.next: Optional['DoublyNode'] = None
-        self.prev: Optional['DoublyNode'] = None
+        self.next: Optional["DoublyNode"] = None
+        self.prev: Optional["DoublyNode"] = None
 
 
 class SinglyLinkedList:
     """
     A foundational Singly Linked List.
-    Optimized for fast O(1) insertions at the head.
+    Optimized for fast O(1) insertions at the head and linear traversals.
     """
 
     def __init__(self):
+        """Initializes an empty Singly Linked List with a head pointer and size counter."""
         self.head: Optional[Node] = None
         self._size: int = 0
 
     def __len__(self) -> int:
+        """Returns the current number of nodes in the list in O(1) time."""
         return self._size
 
     def __iter__(self) -> Iterator[Any]:
+        """
+        Iterates through the list data from head to tail.
+
+        Yields:
+            Any: The data stored in each node.
+        """
         current = self.head
         while current:
             yield current.data
             current = current.next
 
+    def traverse(self) -> Generator[Optional[Node], None, None]:
+        """
+        Yields the actual Node objects for visualization purposes.
+
+        Complexity: O(N)
+
+        Yields:
+            Optional[Node]: The current node being visited during a traversal.
+        """
+        current = self.head
+        while current:
+            yield current
+            current = current.next
+
     def insert_at_head(self, data: Any) -> None:
-        """Inserts a new node at the beginning of the list in O(1) time."""
+        """
+        Inserts a new node at the beginning of the list.
+
+        Complexity: O(1)
+
+        Args:
+            data (Any): The data to store in the new node.
+        """
         new_node = Node(data)
         new_node.next = self.head
         self.head = new_node
         self._size += 1
 
     def append(self, data: Any) -> None:
-        """Appends a node to the end of the list in O(N) time."""
+        """
+        Appends a node to the very end of the list.
+
+        Complexity: O(N) because it must traverse to find the last node.
+
+        Args:
+            data (Any): The data to append.
+        """
         new_node = Node(data)
         if not self.head:
             self.head = new_node
@@ -64,13 +115,28 @@ class SinglyLinkedList:
         self._size += 1
 
     def display(self) -> str:
-        """Returns a string representation of the list."""
+        """
+        Returns a string representation of the list for debugging.
+
+        Returns:
+            str: A formatted string like '1 -> 2 -> NULL'.
+        """
         elements = [str(data) for data in self]
-        return " -> ".join(elements) + " -> NULL"
+        return " -> ".join(elements) + " -> NULL" if elements else "EMPTY"
 
     def remove(self, data: Any) -> bool:
-        """Removes the first occurrence of data. Returns True if successful."""
-        if not self.head:  # Missing line 68-69 logic
+        """
+        Removes the first occurrence of a specific value from the list.
+
+        Complexity: O(N)
+
+        Args:
+            data (Any): The value to search for and remove.
+
+        Returns:
+            bool: True if the element was found and removed, False otherwise.
+        """
+        if not self.head:
             return False
 
         if self.head.data == data:
@@ -91,25 +157,40 @@ class SinglyLinkedList:
 class DoublyLinkedList:
     """
     An advanced Doubly Linked List.
-    Allows for bidirectional traversal and easier node deletion.
+    Supports bidirectional traversal and O(1) tail operations.
     """
 
     def __init__(self):
+        """Initializes an empty list with head, tail, and size attributes."""
         self.head: Optional[DoublyNode] = None
         self.tail: Optional[DoublyNode] = None
         self._size: int = 0
 
     def __len__(self) -> int:
+        """Returns the total node count in O(1) time."""
         return self._size
 
     def __iter__(self) -> Iterator[Any]:
+        """
+        Iterates through the list in forward direction (Head to Tail).
+
+        Yields:
+            Any: The data stored in each node.
+        """
         current = self.head
         while current:
             yield current.data
             current = current.next
 
     def append(self, data: Any) -> None:
-        """Appends a node to the end of the list in O(1) time."""
+        """
+        Appends a node to the end of the list.
+
+        Complexity: O(1) because we maintain a tail pointer.
+
+        Args:
+            data (Any): The data to append.
+        """
         new_node = DoublyNode(data)
         if not self.head:
             self.head = new_node
@@ -122,7 +203,14 @@ class DoublyLinkedList:
         self._size += 1
 
     def prepend(self, data: Any) -> None:
-        """Inserts a node at the beginning of the list in O(1) time."""
+        """
+        Inserts a node at the very beginning of the list.
+
+        Complexity: O(1)
+
+        Args:
+            data (Any): The data to prepend at the head.
+        """
         new_node = DoublyNode(data)
         if not self.head:
             self.head = new_node
@@ -134,21 +222,41 @@ class DoublyLinkedList:
         self._size += 1
 
     def display_forward(self) -> str:
-        """Returns a string representation from head to tail."""
+        """
+        Returns a string representation from head to tail.
+
+        Returns:
+            str: Elements separated by bidirectional arrows.
+        """
         elements = [str(data) for data in self]
-        return " <-> ".join(elements)
+        return " <-> ".join(elements) if elements else "EMPTY"
 
     def display_backward(self) -> str:
-        """Returns a string representation from tail to head."""
+        """
+        Traverses and returns a string representation from tail to head.
+
+        Returns:
+            str: Reversed list representation.
+        """
         elements = []
         current = self.tail
         while current:
             elements.append(str(current.data))
             current = current.prev
-        return " <-> ".join(elements)
+        return " <-> ".join(elements) if elements else "EMPTY"
 
     def remove(self, data: Any) -> bool:
-        """Removes a node from the doubly linked list in O(N) time."""
+        """
+        Removes a specific node by value.
+
+        Complexity: O(N) to locate the node.
+
+        Args:
+            data (Any): The value to remove.
+
+        Returns:
+            bool: True if removed, False if not found.
+        """
         current = self.head
         while current:
             if current.data == data:
