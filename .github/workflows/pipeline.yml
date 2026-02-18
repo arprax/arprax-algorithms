@@ -52,7 +52,7 @@ jobs:
         # Captures the text report into a file
         run: |
           set -o pipefail
-          pytest --cov=src --cov-report=xml --cov-report=term-missing:skip-covered | tee coverage_report.txt
+          pytest --cov-report=xml | tee coverage_report.txt
 
       - name: Upload Coverage Artifact
         # Stores the report so the 'release' job can access it

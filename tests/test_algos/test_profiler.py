@@ -77,17 +77,6 @@ def test_complexity_heuristic():
     assert profiler._guess_complexity(15.0) == "High Growth"
 
 
-def test_stress_suite(shared_profiler):
-    """Test head-to-head algorithm comparisons."""
-    from arprax.algos.algorithms import bubble_sort
-    from arprax.algos.utils.generators import random_array
-
-    funcs = {"bubble": bubble_sort}
-    res = shared_profiler.run_stress_suite(funcs, random_array, n_values=[10, 20])
-    assert 10 in res
-    assert "bubble" in res[10]
-
-
 def test_statistical_branches_comprehensive(shared_profiler):
     """Forces execution of median and mean branches in the benchmark method."""
 

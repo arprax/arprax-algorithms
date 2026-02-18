@@ -1,14 +1,30 @@
 """
-Arprax Algorithms: Linear Data Structures
-Provides industrial-grade Singly and Doubly Linked Lists with generator support for visualization.
+Arprax Algorithms: Linear Data Structures.
+
+This module provides fundamental linear data structures optimized for performance.
+It includes node-based implementations of Lists, Stacks, Queues, and Bags to
+ensure O(1) time complexity for core operations, avoiding the overhead of
+dynamic array resizing found in standard Python lists.
+
+Classes:
+    1. SinglyLinkedList: Basic node-based list (Forward traversal).
+    2. DoublyLinkedList: Bidirectional node-based list.
+    3. Stack: LIFO (Last-In First-Out) structure.
+    4. Queue: FIFO (First-In First-Out) structure.
+    5. Bag: Unordered collection for collecting items.
+
+Reference:
+    Algorithms, 4th Edition by Sedgewick and Wayne, Section 1.3.
 """
 
-from typing import Any, Optional, Iterator, Generator
+from typing import Any, Optional, Iterator, TypeVar, Generic
+
+T = TypeVar("T")
 
 
 class Node:
     """
-    A standard node for a Singly Linked List.
+    A standard node for Singly Linked structures.
 
     Attributes:
         data (Any): The value stored in the node.
@@ -16,14 +32,13 @@ class Node:
     """
 
     def __init__(self, data: Any):
-        """Initializes a new Singly Linked List node."""
         self.data = data
         self.next: Optional["Node"] = None
 
 
 class DoublyNode:
     """
-    A node for a Doubly Linked List containing prev and next references.
+    A node for Doubly Linked structures.
 
     Attributes:
         data (Any): The value stored in the node.
@@ -32,10 +47,12 @@ class DoublyNode:
     """
 
     def __init__(self, data: Any):
-        """Initializes a new Doubly Linked List node."""
         self.data = data
         self.next: Optional["DoublyNode"] = None
         self.prev: Optional["DoublyNode"] = None
+
+
+# --- Section 1: Linked Lists ---
 
 
 class SinglyLinkedList:
@@ -45,12 +62,12 @@ class SinglyLinkedList:
     """
 
     def __init__(self):
-        """Initializes an empty Singly Linked List with a head pointer and size counter."""
+        """Initializes an empty Singly Linked List."""
         self.head: Optional[Node] = None
         self._size: int = 0
 
     def __len__(self) -> int:
-        """Returns the current number of nodes in the list in O(1) time."""
+        """Returns the number of nodes in the list."""
         return self._size
 
     def __iter__(self) -> Iterator[Any]:
@@ -65,28 +82,18 @@ class SinglyLinkedList:
             yield current.data
             current = current.next
 
-    def traverse(self) -> Generator[Optional[Node], None, None]:
-        """
-        Yields the actual Node objects for visualization purposes.
-
-        Complexity: O(N)
-
-        Yields:
-            Optional[Node]: The current node being visited during a traversal.
-        """
-        current = self.head
-        while current:
-            yield current
-            current = current.next
+    def is_empty(self) -> bool:
+        """Returns True if the list contains no elements."""
+        return self.head is None
 
     def insert_at_head(self, data: Any) -> None:
         """
         Inserts a new node at the beginning of the list.
 
-        Complexity: O(1)
+        Time Complexity: O(1)
 
         Args:
-            data (Any): The data to store in the new node.
+            data (Any): The data to store.
         """
         new_node = Node(data)
         new_node.next = self.head
@@ -97,7 +104,7 @@ class SinglyLinkedList:
         """
         Appends a node to the very end of the list.
 
-        Complexity: O(N) because it must traverse to find the last node.
+        Time Complexity: O(N)
 
         Args:
             data (Any): The data to append.
@@ -107,43 +114,30 @@ class SinglyLinkedList:
             self.head = new_node
             self._size += 1
             return
-
         current = self.head
         while current.next:
             current = current.next
         current.next = new_node
         self._size += 1
 
-    def display(self) -> str:
-        """
-        Returns a string representation of the list for debugging.
-
-        Returns:
-            str: A formatted string like '1 -> 2 -> NULL'.
-        """
-        elements = [str(data) for data in self]
-        return " -> ".join(elements) + " -> NULL" if elements else "EMPTY"
-
     def remove(self, data: Any) -> bool:
         """
         Removes the first occurrence of a specific value from the list.
 
-        Complexity: O(N)
+        Time Complexity: O(N)
 
         Args:
-            data (Any): The value to search for and remove.
+            data (Any): The value to remove.
 
         Returns:
-            bool: True if the element was found and removed, False otherwise.
+            bool: True if removed, False otherwise.
         """
         if not self.head:
             return False
-
         if self.head.data == data:
             self.head = self.head.next
             self._size -= 1
             return True
-
         current = self.head
         while current.next:
             if current.next.data == data:
@@ -153,6 +147,16 @@ class SinglyLinkedList:
             current = current.next
         return False
 
+    def display(self) -> str:
+        """
+        Returns a string representation of the list for debugging.
+
+        Returns:
+            str: Format '1 -> 2 -> NULL'.
+        """
+        elements = [str(data) for data in self]
+        return " -> ".join(elements) + " -> NULL" if elements else "EMPTY"
+
 
 class DoublyLinkedList:
     """
@@ -161,32 +165,31 @@ class DoublyLinkedList:
     """
 
     def __init__(self):
-        """Initializes an empty list with head, tail, and size attributes."""
+        """Initializes an empty Doubly Linked List."""
         self.head: Optional[DoublyNode] = None
         self.tail: Optional[DoublyNode] = None
         self._size: int = 0
 
     def __len__(self) -> int:
-        """Returns the total node count in O(1) time."""
+        """Returns the number of nodes in the list."""
         return self._size
 
     def __iter__(self) -> Iterator[Any]:
-        """
-        Iterates through the list in forward direction (Head to Tail).
-
-        Yields:
-            Any: The data stored in each node.
-        """
+        """Iterates through the list from Head to Tail."""
         current = self.head
         while current:
             yield current.data
             current = current.next
 
+    def is_empty(self) -> bool:
+        """Returns True if the list contains no elements."""
+        return self.head is None
+
     def append(self, data: Any) -> None:
         """
         Appends a node to the end of the list.
 
-        Complexity: O(1) because we maintain a tail pointer.
+        Time Complexity: O(1)
 
         Args:
             data (Any): The data to append.
@@ -204,12 +207,12 @@ class DoublyLinkedList:
 
     def prepend(self, data: Any) -> None:
         """
-        Inserts a node at the very beginning of the list.
+        Inserts a node at the beginning of the list.
 
-        Complexity: O(1)
+        Time Complexity: O(1)
 
         Args:
-            data (Any): The data to prepend at the head.
+            data (Any): The data to prepend.
         """
         new_node = DoublyNode(data)
         if not self.head:
@@ -221,41 +224,17 @@ class DoublyLinkedList:
             self.head = new_node
         self._size += 1
 
-    def display_forward(self) -> str:
-        """
-        Returns a string representation from head to tail.
-
-        Returns:
-            str: Elements separated by bidirectional arrows.
-        """
-        elements = [str(data) for data in self]
-        return " <-> ".join(elements) if elements else "EMPTY"
-
-    def display_backward(self) -> str:
-        """
-        Traverses and returns a string representation from tail to head.
-
-        Returns:
-            str: Reversed list representation.
-        """
-        elements = []
-        current = self.tail
-        while current:
-            elements.append(str(current.data))
-            current = current.prev
-        return " <-> ".join(elements) if elements else "EMPTY"
-
     def remove(self, data: Any) -> bool:
         """
-        Removes a specific node by value.
+        Removes the first occurrence of a specific value.
 
-        Complexity: O(N) to locate the node.
+        Time Complexity: O(N)
 
         Args:
             data (Any): The value to remove.
 
         Returns:
-            bool: True if removed, False if not found.
+            bool: True if removed, False otherwise.
         """
         current = self.head
         while current:
@@ -274,3 +253,216 @@ class DoublyLinkedList:
                 return True
             current = current.next
         return False
+
+    def display_forward(self) -> str:
+        """Returns a string representation from Head to Tail."""
+        elements = [str(data) for data in self]
+        return " <-> ".join(elements) if elements else "EMPTY"
+
+
+# --- Section 2: Fundamental Abstract Data Types ---
+
+
+class Bag(Generic[T]):
+    """
+    A collection where removing items is not supported.
+    Its purpose is to provide the ability to collect items and then iterate over them.
+
+    Time Complexity:
+        add: O(1)
+        iterate: O(N)
+    """
+
+    def __init__(self):
+        """Initializes an empty Bag."""
+        self._first: Optional[Node] = None
+        self._n: int = 0
+
+    def is_empty(self) -> bool:
+        """Returns True if the bag is empty."""
+        return self._first is None
+
+    def size(self) -> int:
+        """Returns the number of items in the bag."""
+        return self._n
+
+    def add(self, item: T) -> None:
+        """
+        Adds an item to the bag.
+
+        Args:
+            item (T): The item to add.
+        """
+        old_first = self._first
+        self._first = Node(item)
+        self._first.next = old_first
+        self._n += 1
+
+    def __iter__(self) -> Iterator[T]:
+        """Iterates over the items in the bag (order is LIFO but irrelevant)."""
+        current = self._first
+        while current:
+            yield current.data
+            current = current.next
+
+
+class Stack(Generic[T]):
+    """
+    A LIFO (Last-In First-Out) stack.
+    Implemented using a linked list to ensure O(1) worst-case time for push/pop,
+    avoiding the resizing overhead of array-based stacks.
+    """
+
+    def __init__(self):
+        """Initializes an empty Stack."""
+        self._first: Optional[Node] = None
+        self._n: int = 0
+
+    def is_empty(self) -> bool:
+        """Returns True if the stack is empty."""
+        return self._first is None
+
+    def size(self) -> int:
+        """Returns the number of items in the stack."""
+        return self._n
+
+    def push(self, item: T) -> None:
+        """
+        Adds an item to the top of the stack.
+
+        Time Complexity: O(1)
+
+        Args:
+            item (T): The item to push.
+        """
+        old_first = self._first
+        self._first = Node(item)
+        self._first.next = old_first
+        self._n += 1
+
+    def pop(self) -> T:
+        """
+        Removes and returns the item most recently added to the stack.
+
+        Time Complexity: O(1)
+
+        Returns:
+            T: The item from the top of the stack.
+
+        Raises:
+            IndexError: If the stack is empty.
+        """
+        if self.is_empty():
+            raise IndexError("Stack underflow")
+
+        item = self._first.data
+        self._first = self._first.next
+        self._n -= 1
+        return item
+
+    def peek(self) -> T:
+        """
+        Returns the item at the top of the stack without removing it.
+
+        Returns:
+            T: The item at the top.
+
+        Raises:
+            IndexError: If the stack is empty.
+        """
+        if self.is_empty():
+            raise IndexError("Stack underflow")
+        return self._first.data
+
+    def __iter__(self) -> Iterator[T]:
+        """Iterates from top to bottom."""
+        current = self._first
+        while current:
+            yield current.data
+            current = current.next
+
+
+class Queue(Generic[T]):
+    """
+    A FIFO (First-In First-Out) queue.
+    Maintains pointers to both head (first) and tail (last) to ensure
+    O(1) enqueue and dequeue operations.
+    """
+
+    def __init__(self):
+        """Initializes an empty Queue."""
+        self._first: Optional[Node] = None  # Beginning of queue
+        self._last: Optional[Node] = None  # End of queue
+        self._n: int = 0
+
+    def is_empty(self) -> bool:
+        """Returns True if the queue is empty."""
+        return self._first is None
+
+    def size(self) -> int:
+        """Returns the number of items in the queue."""
+        return self._n
+
+    def enqueue(self, item: T) -> None:
+        """
+        Adds an item to the end of the queue.
+
+        Time Complexity: O(1)
+
+        Args:
+            item (T): The item to add.
+        """
+        old_last = self._last
+        self._last = Node(item)
+        self._last.next = None
+
+        if self.is_empty():
+            self._first = self._last
+        else:
+            old_last.next = self._last
+        self._n += 1
+
+    def dequeue(self) -> T:
+        """
+        Removes and returns the item least recently added to the queue.
+
+        Time Complexity: O(1)
+
+        Returns:
+            T: The item from the front of the queue.
+
+        Raises:
+            IndexError: If the queue is empty.
+        """
+        if self.is_empty():
+            raise IndexError("Queue underflow")
+
+        item = self._first.data
+        self._first = self._first.next
+        self._n -= 1
+
+        if self.is_empty():
+            self._last = None  # Avoid loitering
+
+        return item
+
+    def peek(self) -> T:
+        """
+        Returns the item at the front of the queue without removing it.
+
+        Returns:
+            T: The item at the front.
+
+        Raises:
+            IndexError: If the queue is empty.
+        """
+        if self.is_empty():
+            raise IndexError("Queue underflow")
+        return self._first.data
+
+    def __iter__(self) -> Iterator[T]:
+        """Iterates from front to back."""
+        current = self._first
+        while current:
+            yield current.data
+            current = current.next

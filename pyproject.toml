@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arprax-algorithms"
-version = "0.2.1"  # <--- Update this before your next release
+version = "0.3.1"  # <--- Update this before your next release
 description = "Industrial-Grade Algorithms by Arprax Lab"
 dependencies = []
 readme = "README.md"
@@ -35,7 +35,13 @@ namespaces = true
 testpaths = ["tests"]
 pythonpath = ["src"] # Tells pytest to look in src/ for the arprax namespace
 norecursedirs = ["tests/manual", "examples", ".*", "dist", "build", "venv"]
-addopts = "--cov=arprax.algos --cov-report=term-missing" # Auto-triggers coverage
+addopts = "--cov=arprax.algos --cov-report=term-missing --cov-branch" # Auto-triggers coverage
+
+# --- Coverage Configuration (The Single Source of Truth) ---
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true
 
 [tool.semantic_release]
 version_variable = ["pyproject.toml:project.version"]

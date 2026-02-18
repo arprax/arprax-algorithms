@@ -1,68 +1,56 @@
-"""
-Unit tests for Arprax Sorting Algorithms.
-Validates functional correctness, edge cases, and visualization generators.
-"""
+import pytest
+from arprax.algos.algorithms.sorting import (
+    selection_sort,
+    insertion_sort,
+    shell_sort,
+    merge_sort,
+    quick_sort,
+    heap_sort,
+)
 
-from arprax.algos.algorithms import merge_sort, bubble_sort, selection_sort
-
-
-def test_sorting_algorithms():
-    """
-    Verifies that all core sorting algorithms correctly sort a standard list.
-
-    This test ensures that the default return (visualize=False) is a sorted list.
-    """
-    sample = [3, 1, 4, 1, 5]
-    expected = [1, 1, 3, 4, 5]
-
-    # Hits standard return paths (Lines 33-39, 123-141)
-    assert merge_sort(sample, visualize=False) == expected
-    assert bubble_sort(sample, visualize=False) == expected
-    assert selection_sort(sample, visualize=False) == expected
+# List of all sort functions to parametrize tests
+SORTS = [selection_sort, insertion_sort, shell_sort, merge_sort, quick_sort, heap_sort]
 
 
-def test_sorting_empty_and_single():
-    """
-    Tests sorting edge cases: empty lists and single-element lists.
+@pytest.mark.parametrize("sort_func", SORTS)
+def test_standard_sort(sort_func):
+    """Test standard sorting functionality."""
+    # Random data
+    arr = [5, 2, 9, 1, 5, 6]
+    sorted_arr = sort_func(arr, visualize=False)
+    assert sorted_arr == [1, 2, 5, 5, 6, 9]
 
-    Ensures algorithms handle minimal inputs without crashing or recursion errors.
-    """
-    assert merge_sort([]) == []
-    assert merge_sort([1]) == [1]
-    assert bubble_sort([]) == []
-    assert selection_sort([99]) == [99]
+    # Already sorted
+    assert sort_func([1, 2, 3]) == [1, 2, 3]
 
+    # Reverse
+    assert sort_func([3, 2, 1]) == [1, 2, 3]
 
-def test_sorting_visualize_mode():
-    """
-    Ensures that algorithms return a generator when the visualize flag is enabled.
-
-    This validates the 'Arprax Academy' educational hooks used by visuals.py.
-    """
-    data = [3, 1, 2]
-
-    # Testing bubble_sort generator branch
-    gen_bubble = bubble_sort(data, visualize=True)
-    assert hasattr(gen_bubble, "__iter__")
-    assert list(gen_bubble)[-1] == [1, 2, 3]
-
-    # Testing selection_sort generator branch
-    gen_selection = selection_sort(data, visualize=True)
-    assert hasattr(gen_selection, "__iter__")
-    assert list(gen_selection)[-1] == [1, 2, 3]
-
-    # Testing merge_sort generator branch
-    gen_merge = merge_sort(data, visualize=True)
-    assert hasattr(gen_merge, "__iter__")
-    assert list(gen_merge)[-1] == [1, 2, 3]
+    # Empty
+    assert sort_func([]) == []
 
 
-def test_bubble_sort_early_exit():
-    """
-    Specifically tests the early-exit optimization in bubble sort.
+@pytest.mark.parametrize("sort_func", SORTS)
+def test_visualizer_mode(sort_func):
+    """Test that visualize=True returns a generator yielding states."""
+    arr = [3, 2, 1]
+    gen = sort_func(arr, visualize=True)
 
-    This ensures that the 'if not swapped: break' branch is executed.
-    """
-    already_sorted = [1, 2, 3, 4, 5]
-    # Hits the early exit branch for 100% coverage
-    assert bubble_sort(already_sorted, visualize=False) == already_sorted
+    # Consuming the generator should yield lists
+    states = list(gen)
+
+    # Must yield at least one state
+    assert len(states) > 0
+
+    # The final state must be sorted
+    assert states[-1] == [1, 2, 3]
+
+    # Check intermediate state is valid list
+    assert isinstance(states[0], list)
+
+
+def test_quick_sort_duplicates():
+    """Specific test for 3-way partitioning efficiency logic."""
+    arr = [2, 2, 2, 1, 3, 2]
+    sorted_arr = quick_sort(arr)
+    assert sorted_arr == [1, 2, 2, 2, 2, 3]
