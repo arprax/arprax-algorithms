@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "arprax-algorithms"
+name = "alnoms"
 version = "0.3.1"  # <--- Update this before your next release
 description = "Industrial-Grade Algorithms by Arprax Lab"
 dependencies = []
@@ -57,6 +57,6 @@ visuals = ["matplotlib>=3.8.0", "networkx>=3.0"]
 [project.urls]
 "Homepage" = "https://algorithms.arprax.com/"
 "Documentation" = "https://algorithms.arprax.com/reference/api/"
-"Source" = "https://github.com/arprax/arprax-algorithms"
-"Tracker" = "https://github.com/arprax/arprax-algorithms/issues"
+"Source" = "https://github.com/arprax/alnoms"
+"Tracker" = "https://github.com/arprax/alnoms/issues"
 "Arprax" = "https://www.arprax.com/"
