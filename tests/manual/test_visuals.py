@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 from examples.visuals import animate_sort, animate_list_search
-from arprax.algos.structures.linear import SinglyLinkedList
+from alnoms.structures.linear import SinglyLinkedList
 
 
 @patch("matplotlib.pyplot.show")

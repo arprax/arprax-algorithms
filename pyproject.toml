@@ -5,13 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "alnoms"
 version = "0.3.1"  # <--- Update this before your next release
-description = "Industrial-Grade Algorithms by Arprax Lab"
+description = "Alnoms: Sovereign Algorithm Standard and Performance Governance Engine"
 dependencies = []
 readme = "README.md"
 authors = [{ name="Arprax Lab", email="lab@arprax.com" }]
 requires-python = ">=3.9"
 # Add keywords to help with Google/PyPI search visibility
-keywords = ["algorithms", "sorting", "profiler", "industrial-cs", "arprax"]
+keywords = ["algorithms", "sorting", "profiler", "industrial-cs", "alnoms", "arprax"]
 # Add classifiers to show professionalism
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -27,15 +27,15 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["arprax*"] # Finds arprax.algos and future pro/enterprise tiers
+include = ["alnoms*"] # Finds alnoms and future pro/enterprise tiers
 namespaces = true
 
 # --- Pytest Configuration ---
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"] # Tells pytest to look in src/ for the arprax namespace
+pythonpath = ["src"] # Tells pytest to look in src/ for the alnoms namespace
 norecursedirs = ["tests/manual", "examples", ".*", "dist", "build", "venv"]
-addopts = "--cov=arprax.algos --cov-report=term-missing --cov-branch" # Auto-triggers coverage
+addopts = "--cov=alnoms --cov-report=term-missing --cov-branch" # Auto-triggers coverage
 
 # --- Coverage Configuration (The Single Source of Truth) ---
 [tool.coverage.report]
@@ -55,8 +55,8 @@ research = ["numpy>=1.26.0"]
 visuals = ["matplotlib>=3.8.0", "networkx>=3.0"]
 
 [project.urls]
-"Homepage" = "https://algorithms.arprax.com/"
-"Documentation" = "https://algorithms.arprax.com/reference/api/"
+"Homepage" = "https://alnoms.com/"
+"Documentation" = "https://alnoms.com/reference/api/"
 "Source" = "https://github.com/arprax/alnoms"
 "Tracker" = "https://github.com/arprax/alnoms/issues"
 "Arprax" = "https://www.arprax.com/"

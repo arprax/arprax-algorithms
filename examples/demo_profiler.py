@@ -1,10 +1,10 @@
-# Location: arprax-algorithms/demo_profiler.py
-from arprax.algos import Profiler  # Updated name and path
-from arprax.algos.utils import random_array  # Updated path
-from arprax.algos.algorithms import sorting  # Better explicit access
+# Location: alnoms/demo_profiler.py
+from alnoms.algos import Profiler  # Updated name and path
+from alnoms.utils import random_array  # Updated path
+from alnoms.algorithms import sorting  # Better explicit access
 
 # 1. Initialize the industrial profiler
-profiler = Profiler(mode="min")  # Renamed from ArpraxProfiler
+profiler = Profiler(mode="min")  # Renamed from Alnoms Profiler
 
 # 2. Define the battle participants
 contestants = {

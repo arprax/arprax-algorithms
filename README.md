@@ -16,13 +16,13 @@ Built by **Arprax Lab**, this toolkit is designed for the "Applied Data Intellig
 
 ```bash
 # Core only
-pip install arprax-algorithms
+pip install alnoms
 
 # With visual tools
-pip install arprax-algorithms[visuals]
+pip install alnoms[visuals]
 
 # With research tools
-pip install arprax-algorithms[research]
+pip install alnoms[research]
 ```
 
 ## 🔬 Quick Start: Benchmarking
@@ -30,9 +30,9 @@ pip install arprax-algorithms[research]
 Once installed, you can immediately run a performance battle between algorithms.
 
 ```python
-from arprax.algos import Profiler
-from arprax.algos.utils import random_array  # Clean import from your new 'utils'
-from arprax.algos.algorithms import merge_sort # Using the 'lifted' API
+from alnoms import Profiler
+from alnoms.utils import random_array  # Clean import from your new 'utils'
+from alnoms.algorithms import merge_sort # Using the 'lifted' API
 
 # 1. Initialize the industrial profiler
 profiler = Profiler(mode="min", repeats=5)

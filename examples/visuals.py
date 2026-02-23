@@ -1,7 +1,7 @@
 from typing import List, Callable, Any
-from arprax.algos.algorithms import bubble_sort
-from arprax.algos.utils import random_array
-from arprax.algos.structures import SinglyLinkedList
+from alnoms.algorithms import bubble_sort
+from alnoms.utils import random_array
+from alnoms.structures import SinglyLinkedList
 
 
 def animate_sort(
@@ -27,9 +27,7 @@ def animate_sort(
         import matplotlib.pyplot as plt
         import matplotlib.animation as animation
     except ImportError:
-        print(
-            "\n[!] Visuals Not Installed. Run: pip install arprax-algorithms[visuals]\n"
-        )
+        print("\n[!] Visuals Not Installed. Run: pip install alnoms[visuals]\n")
         return
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -86,9 +84,7 @@ def animate_list_search(sll, target: Any, title: str = "Singly Linked List Searc
         import networkx as nx
         import matplotlib.pyplot as plt
     except ImportError:
-        print(
-            "\n[!] Visuals Not Installed. Run: pip install arprax-algorithms[visuals]\n"
-        )
+        print("\n[!] Visuals Not Installed. Run: pip install alnoms[visuals]\n")
         return
 
     G = nx.DiGraph()
