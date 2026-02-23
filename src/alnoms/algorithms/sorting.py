@@ -1,5 +1,5 @@
 """
-Arprax Algorithms: Sorting Module.
+Alnoms: Sorting Module.
 
 Provides industrial-grade implementations of fundamental sorting algorithms.
 Includes elementary sorts (Selection, Insertion, Shell) and advanced sorts

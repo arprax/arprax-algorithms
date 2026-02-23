@@ -1,5 +1,5 @@
 """
-Arprax Algorithms: Linear Data Structures.
+Alnoms: Linear Data Structures.
 
 This module provides fundamental linear data structures optimized for performance.
 It includes node-based implementations of Lists, Stacks, Queues, and Bags to

@@ -1,5 +1,5 @@
 """
-Arprax Algorithms: Performance Profiling Tools
+Alnoms: Performance Profiling Tools
 Provides precision timing and algorithmic complexity analysis for research.
 """
 

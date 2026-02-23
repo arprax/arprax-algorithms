@@ -1,5 +1,5 @@
 """
-Arprax Algorithms: Data Generators
+Alnoms: Data Generators
 Provides industrial-grade tools for creating research-ready datasets.
 """
 

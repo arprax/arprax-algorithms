@@ -1,5 +1,5 @@
 """
-Arprax Algorithms: Pointer Utilities
+Alnoms: Pointer Utilities
 Contains two-pointer algorithms like Floyd's Cycle Detection (Tortoise & Hare).
 """
 

@@ -1,3 +1,3 @@
 """
-Test suite for the Arprax Algorithms ecosystem.
+Test suite for the Alnoms ecosystem.
 """

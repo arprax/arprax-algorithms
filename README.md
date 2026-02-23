@@ -1,4 +1,4 @@
-# Arprax Algorithms
+# Alnoms
 
 **Industrial-grade algorithms, performance profilers, and data structures for Python.**
 
@@ -82,7 +82,7 @@ See the "Cite this repository" button on our [GitHub](https://github.com/arprax/
 **To cite the Handbook (Documentation):**
 
 ```bibtex
-@manual{arprax_handbook,
+@manual{alnoms_handbook,
   title        = {The Algorithm Engineering Handbook},
   author       = {Chowdhury, Tanmoy},
   organization = {Arprax LLC},
