@@ -66,7 +66,7 @@ python examples/visualizer.py
 > [!TIP]
 > For detailed instructions on running these demos and setting up the visualization environment, see our [**Examples Guide**](./examples/GETTING_STARTED.md).
 
-## 🏗️ The Arprax Philosophy
+## 🏗️ The Alnoms Philosophy
 
 > **Applied Data Intelligence requires more than just code—it requires proof.**
 
@@ -77,7 +77,7 @@ python examples/visualizer.py
 ## 📚 Citation
 
 **To cite the Software:**
-See the "Cite this repository" button on our [GitHub](https://github.com/arprax/arprax-algorithms).
+See the "Cite this repository" button on our [GitHub](https://github.com/arprax/alnoms).
 
 **To cite the Handbook (Documentation):**
 
@@ -87,7 +87,7 @@ See the "Cite this repository" button on our [GitHub](https://github.com/arprax/
   author       = {Chowdhury, Tanmoy},
   organization = {Arprax LLC},
   year         = {2026},
-  url          = {https://algorithms.arprax.com/book},
+  url          = {https://alnoms.com/book},
   note         = {Accessed: 2026-02-01}
 }
 ```
