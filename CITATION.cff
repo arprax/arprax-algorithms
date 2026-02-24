@@ -4,9 +4,9 @@ authors:
   - family-names: "Chowdhury"
     given-names: "Tanmoy"
     affiliation: "Arprax LLC"
-title: "arprax-algorithms: A Production-Grade Algorithm Engineering Library"
+title: "Alnoms: A Production-Grade Algorithm Engineering Library"
 version: 0.1.0
 date-released: 2026-02-01
-url: "https://algorithms.arprax.com"
-repository-code: "https://github.com/arprax/arprax-algorithms"
+url: "https://alnoms.com"
+repository-code: "https://github.com/arprax/alnoms"
 license: MIT
