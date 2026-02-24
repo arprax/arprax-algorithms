@@ -1,5 +1,5 @@
 """
-Alnoms: Performance Profiling Tools
+Profiler: Performance Profiling Tools
 Provides precision timing and algorithmic complexity analysis for research.
 """
 

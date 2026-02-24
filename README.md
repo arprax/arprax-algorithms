@@ -13,7 +13,7 @@ Built by **Arprax Lab**, this toolkit is designed for the "Applied Data Intellig
 * **Standard Library:** High-performance implementations of classic algorithms (Merge Sort, Bubble Sort, etc.) with strict type hinting.
 
 ## 📦 Installation
-
+[![PyPI version](https://img.shields.io/pypi/v/alnoms.svg?color=FF6F00&logo=pypi&logoColor=white)](https://pypi.org/project/alnoms/)
 ```bash
 # Core only
 pip install alnoms
