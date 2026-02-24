@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "alnoms"
-version = "0.4.1"  # <--- Update 0.F.0 to match with github release. Everytime you add feature update 0.F.0, for bug/fix 0.0.B will be auto update. And For Major release change M.F.0
+version = "0.4.10"  # Managed by promote_release.py - Do not edit manually. If you do, always match it with the current github release
 description = "Alnoms: Sovereign Algorithm Standard and Performance Governance Engine"
 dependencies = []
 readme = "README.md"
@@ -44,7 +44,8 @@ show_missing = true
 skip_covered = true
 
 [tool.semantic_release]
-version_variable = ["pyproject.toml:project.version"]
+#version_variable = ["pyproject.toml:project.version"]
+version_toml = ["pyproject.toml:project.version"]
 branch = "main" # Monitoring the PUBLIC main branch for releases
 upload_to_pypi = false  # pipeline handles this
 build_command = "" # false: GitHub Action handles the build
