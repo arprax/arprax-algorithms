@@ -82,7 +82,7 @@ class Profiler:
             if gc_old:
                 gc.enable()
 
-        # Branch coverage fix: ensure all statistical modes are handled
+        # Branch coverage: ensure all statistical modes are handled
         if self.mode == "median":
             return statistics.median(times)
         elif self.mode == "mean":
