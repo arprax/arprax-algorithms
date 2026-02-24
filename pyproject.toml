@@ -35,7 +35,7 @@ namespaces = true
 testpaths = ["tests"]
 pythonpath = ["src"] # Tells pytest to look in src/ for the alnoms namespace
 norecursedirs = ["tests/manual", "examples", ".*", "dist", "build", "venv"]
-addopts = "--cov=alnoms --cov-report=term-missing --cov-branch" # Auto-triggers coverage
+addopts = "--cov=src/alnoms --cov-report=term-missing --cov-branch" # Auto-triggers coverage
 
 # --- Coverage Configuration (The Single Source of Truth) ---
 [tool.coverage.report]
