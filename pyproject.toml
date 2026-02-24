@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "alnoms"
-version = "0.3.1"  # <--- Update this before your next release
+version = "0.4.7"  # <--- Update this before your next release
 description = "Alnoms: Sovereign Algorithm Standard and Performance Governance Engine"
 dependencies = []
 readme = "README.md"
