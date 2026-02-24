@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "alnoms"
-version = "0.4.7"  # <--- Update this before your next release
+version = "0.4.1"  # <--- Update 0.F.0 to match with github release. Everytime you add feature update 0.F.0, for bug/fix 0.0.B will be auto update. And For Major release change M.F.0
 description = "Alnoms: Sovereign Algorithm Standard and Performance Governance Engine"
 dependencies = []
 readme = "README.md"
